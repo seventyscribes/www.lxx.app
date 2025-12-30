@@ -78,27 +78,61 @@ Beta v0.1 ──► Beta v0.2 ──► Beta v0.3 ──► Beta v0.4 ──► 
 
 ---
 
-## Upcoming Versions
-
----
-
 ### Beta v0.3.0 - Backend & Auth
-**Status**: ⬜ Not Started
-**Target**: Week 4
+**Status**: ✅ Complete
+**Completed**: 2025-12-30
 
 | Task | Status | Agent |
 |------|--------|-------|
-| Set up NextAuth.js | ⬜ Pending | Auth |
-| Implement email/password auth | ⬜ Pending | Auth |
-| Add Google OAuth | ⬜ Pending | Auth |
-| Create protected route middleware | ⬜ Pending | Auth |
-| Build journal API routes | ⬜ Pending | Backend |
-| Build progress API routes | ⬜ Pending | Backend |
-| Build settings API routes | ⬜ Pending | Backend |
-| Connect frontend to real data | ⬜ Pending | Frontend |
+| Set up NextAuth.js | ✅ Complete | Auth |
+| Implement email/password auth | ✅ Complete | Auth |
+| Add Google OAuth | ✅ Complete | Auth |
+| Create protected route middleware | ✅ Complete | Auth |
+| Build journal API routes | ✅ Complete | Backend |
+| Build progress API routes | ✅ Complete | Backend |
+| Build settings API routes | ✅ Complete | Backend |
+| Build days API route | ✅ Complete | Backend |
+| Connect frontend to real data | ✅ Complete | Frontend |
+| Create database seed script | ✅ Complete | Backend |
 | Import complete 365-day content | ⬜ Pending | Content |
 
 **Milestone**: Full auth flow, all features work with database.
+
+#### v0.3.0 Changelog - 2025-12-30
+
+**Added**
+- NextAuth.js v5 with Prisma adapter for authentication
+- Email/password authentication with bcrypt password hashing
+- Google OAuth provider integration
+- JWT session strategy for secure token management
+- Protected route middleware (/today, /progress, /account)
+- Auth UI pages: login and signup with trial info
+- API routes:
+  - `POST /api/auth/signup` - User registration with 7-day trial
+  - `GET/PUT /api/journal/[day]` - Journal entries
+  - `GET/PATCH /api/progress` - User progress
+  - `POST /api/progress/complete` - Mark day as complete with streak logic
+  - `GET/PATCH /api/settings` - User preferences
+  - `GET /api/days/[dayNumber]` - Bible day content
+- Database seed script with 3 sample Bible days
+- UserSettings model for font preferences
+- Account, Session, VerificationToken models for NextAuth
+- Trial period logic with subscription access checks
+- Frontend context connected to API with optimistic updates
+- Sign out functionality on Account page
+
+**Changed**
+- Prisma schema updated with NextAuth models
+- Progress context now syncs with database API
+- ProgressProvider fetches initial data from API
+
+**Technical Notes**
+- Build requires `prisma generate` (runs automatically via postinstall)
+- Environment variables needed: DATABASE_URL, AUTH_SECRET/NEXTAUTH_SECRET, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
+
+---
+
+## Upcoming Versions
 
 ---
 
@@ -166,7 +200,7 @@ Beta v0.1 ──► Beta v0.2 ──► Beta v0.3 ──► Beta v0.4 ──► 
 |---------|------|---------|
 | v0.1.0 | 2025-12-30 | Project setup with Next.js 16, Tailwind, Prisma schema |
 | v0.2.0 | 2025-12-30 | UI components and screens with mock data |
-| v0.3.0 | TBD | Authentication and API |
+| v0.3.0 | 2025-12-30 | Authentication and API routes |
 | v0.4.0 | TBD | Payments and subscriptions |
 | v0.5.0 | TBD | Testing and polish |
 | v1.0.0 | TBD | Alpha launch |
@@ -231,4 +265,4 @@ When completing tasks, update this file with:
 
 ---
 
-*Updated: 2025-12-30*
+*Updated: 2025-12-30 (v0.3.0)*

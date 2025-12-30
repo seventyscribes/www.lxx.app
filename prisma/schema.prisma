@@ -1,0 +1,102 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model - basic account info and trial management
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  passwordHash  String?
+  trialEndDate  DateTime
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  subscription Subscription?
+  progress     UserProgress?
+  entries      JournalEntry[]
+
+  @@index([email])
+}
+
+// Subscription model - Stripe subscription state
+model Subscription {
+  id                   String    @id @default(cuid())
+  userId               String    @unique
+  stripeCustomerId     String    @unique
+  stripeSubscriptionId String?   @unique
+  status               String    // active, canceled, past_due, trialing, etc.
+  planType             String    // monthly, annual
+  startedAt            DateTime  @default(now())
+  canceledAt           DateTime?
+  currentPeriodEnd     DateTime?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([stripeCustomerId])
+  @@index([stripeSubscriptionId])
+}
+
+// UserProgress model - tracks study progress and streaks
+model UserProgress {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  currentDay      Int      @default(1)
+  completedDayIds Int[]    @default([])
+  lastActiveDate  DateTime?
+  streakCount     Int      @default(0)
+  longestStreak   Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// JournalEntry model - stores notes and reflection answers per day
+model JournalEntry {
+  id                 String   @id @default(cuid())
+  userId             String
+  dayNumber          Int
+  content            String?  @db.Text // Free-form notes
+  reflectionAnswers  Json?    // { "0": "answer1", "1": "answer2", ... }
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  // Relations
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bibleDay BibleDay @relation(fields: [dayNumber], references: [dayNumber])
+
+  @@unique([userId, dayNumber])
+  @@index([userId])
+  @@index([dayNumber])
+}
+
+// BibleDay model - read-only table with 365 records of daily content
+model BibleDay {
+  dayNumber         Int      @id
+  title             String   // e.g., "In the Beginning"
+  passageReference  String   // e.g., "Genesis 1-2"
+  verses            Json     // Array of { book, chapter, verse, text }
+  modernSummary     String   @db.Text
+  reflectionPrompts String[] // Array of prompt strings
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Relations
+  entries JournalEntry[]
+
+  @@index([passageReference])
+}

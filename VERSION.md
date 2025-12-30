@@ -17,20 +17,32 @@ Beta v0.1 ──► Beta v0.2 ──► Beta v0.3 ──► Beta v0.4 ──► 
 ## Current Version
 
 ### Beta v0.1.0 - Project Foundation
-**Status**: 🟡 In Progress
-**Target**: Week 1
+**Status**: ✅ Complete
+**Completed**: 2025-12-30
 
 | Task | Status | Agent |
 |------|--------|-------|
-| Initialize Next.js 14 project | ⬜ Pending | Architect |
-| Configure Tailwind with design tokens | ⬜ Pending | Architect |
-| Set up Prisma + PostgreSQL | ⬜ Pending | Database |
-| Create database schema | ⬜ Pending | Database |
-| Run initial migration | ⬜ Pending | Database |
+| Initialize Next.js 14 project | ✅ Complete | Architect |
+| Configure Tailwind with design tokens | ✅ Complete | Architect |
+| Set up Prisma + PostgreSQL | ✅ Complete | Database |
+| Create database schema | ✅ Complete | Database |
+| Create .env.example template | ✅ Complete | Architect |
+| Establish folder structure | ✅ Complete | Architect |
 | Create project documentation | ✅ Complete | - |
 | Define agent workflows | ✅ Complete | - |
 
 **Milestone**: Development environment ready, database schema defined.
+
+#### v0.1.0 Changelog - 2025-12-30
+
+**Added**
+- Next.js 16 with App Router, TypeScript, and Tailwind CSS v4
+- LXX design system with custom colors (navy, gold, parchment, charcoal)
+- Custom shadow utilities (shadow-paper, shadow-paper-xl)
+- Prisma schema with 5 models: User, Subscription, UserProgress, JournalEntry, BibleDay
+- Project folder structure: app/(auth), app/(main), app/api, components/ui, components/layout, lib/, server/db/
+- Environment template (.env.example) with all required variables
+- Utility functions (cn, formatDate, isTrialExpired, getDaysRemaining, getProgressPercentage)
 
 ---
 
@@ -138,7 +150,7 @@ Beta v0.1 ──► Beta v0.2 ──► Beta v0.3 ──► Beta v0.4 ──► 
 
 | Version | Date | Summary |
 |---------|------|---------|
-| v0.1.0 | TBD | Project setup, docs, database schema |
+| v0.1.0 | 2025-12-30 | Project setup with Next.js 16, Tailwind, Prisma schema |
 | v0.2.0 | TBD | UI components and screens |
 | v0.3.0 | TBD | Authentication and API |
 | v0.4.0 | TBD | Payments and subscriptions |

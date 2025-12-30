@@ -1,0 +1,130 @@
+@import "tailwindcss";
+
+/* LXX Bible Study Design System */
+
+:root {
+  /* Core Brand Colors */
+  --color-navy: #1a365d;
+  --color-gold: #c5a059;
+  --color-parchment: #faf8f5;
+  --color-charcoal: #374151;
+
+  /* Semantic Colors */
+  --background: var(--color-parchment);
+  --foreground: var(--color-charcoal);
+}
+
+@theme inline {
+  /* Colors */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-navy: var(--color-navy);
+  --color-gold: var(--color-gold);
+  --color-parchment: var(--color-parchment);
+  --color-charcoal: var(--color-charcoal);
+
+  /* Typography */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+
+  /* Custom Shadows */
+  --shadow-paper: 0 4px 20px -2px rgba(26, 54, 93, 0.08), 0 2px 8px -2px rgba(26, 54, 93, 0.04);
+  --shadow-paper-xl: 0 8px 30px -4px rgba(26, 54, 93, 0.12), 0 4px 12px -4px rgba(26, 54, 93, 0.06);
+}
+
+/* Global Styles */
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Utility Classes */
+@layer utilities {
+  /* Paper Shadow Effects */
+  .shadow-paper {
+    box-shadow: 0 4px 20px -2px rgba(26, 54, 93, 0.08), 0 2px 8px -2px rgba(26, 54, 93, 0.04);
+  }
+
+  .shadow-paper-xl {
+    box-shadow: 0 8px 30px -4px rgba(26, 54, 93, 0.12), 0 4px 12px -4px rgba(26, 54, 93, 0.06);
+  }
+
+  /* Safe Area for Mobile Devices */
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .safe-area-inset-bottom {
+    padding-bottom: max(env(safe-area-inset-bottom), 0px);
+  }
+
+  /* Text Selection */
+  .selection-gold {
+    @apply selection:bg-gold/10;
+  }
+
+  /* Day Path Timeline Line */
+  .day-path-line {
+    background: linear-gradient(
+      to bottom,
+      var(--color-gold) 0%,
+      var(--color-navy) 50%,
+      var(--color-gold) 100%
+    );
+  }
+
+  /* Smooth Scrolling */
+  .smooth-scroll {
+    scroll-behavior: smooth;
+  }
+
+  /* Hide scrollbar while maintaining scroll functionality */
+  .scrollbar-hidden {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Animation Classes */
+@layer utilities {
+  .animate-in {
+    animation-name: animate-in;
+    animation-duration: 0.3s;
+    animation-fill-mode: both;
+  }
+
+  .fade-in {
+    --tw-enter-opacity: initial;
+  }
+
+  .zoom-in-95 {
+    --tw-enter-scale: 0.95;
+  }
+
+  @keyframes animate-in {
+    from {
+      opacity: var(--tw-enter-opacity, 1);
+      transform: scale(var(--tw-enter-scale, 1));
+    }
+  }
+}
+
+/* Typography Overrides */
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif);
+    color: var(--color-navy);
+  }
+
+  /* Improve text rendering */
+  * {
+    text-rendering: optimizeLegibility;
+  }
+}

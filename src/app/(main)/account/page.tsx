@@ -390,7 +390,7 @@ export default function AccountPage() {
             LXX Bible Study &copy; MMXXV
           </p>
           <p className="text-[9px] text-gray-300 uppercase tracking-widest">
-            Build 0.4.0-beta &bull; Made with reverence
+            Build 0.0.4-alpha &bull; Made with reverence
           </p>
         </footer>
       </div>

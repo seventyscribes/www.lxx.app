@@ -1,22 +1,22 @@
 # Version Tracker
 
-Track development progress from **Beta v0.1** to **Alpha v1.0**.
+Track development progress from **Alpha v0.0.1** to **Beta v0.1.0**.
 
 ---
 
 ## Release Roadmap
 
 ```
-Beta v0.1 ──► Beta v0.2 ──► Beta v0.3 ──► Beta v0.4 ──► Beta v0.5 ──► Alpha v1.0
-   │              │              │              │              │              │
- Setup         Core UI      Backend       Payments       Polish        Launch
+Alpha v0.0.1 ──► Alpha v0.0.2 ──► Alpha v0.0.3 ──► Alpha v0.0.4 ──► Alpha v0.0.5 ──► Beta v0.1.0
+      │                │                │                │                │                │
+    Setup          Core UI          Backend         Payments          Polish           Launch
 ```
 
 ---
 
-## Current Version
+## Completed Versions
 
-### Beta v0.1.0 - Project Foundation
+### Alpha v0.0.1 - Project Foundation
 **Status**: ✅ Complete
 **Completed**: 2025-12-30
 
@@ -33,7 +33,7 @@ Beta v0.1 ──► Beta v0.2 ──► Beta v0.3 ──► Beta v0.4 ──► 
 
 **Milestone**: Development environment ready, database schema defined.
 
-#### v0.1.0 Changelog - 2025-12-30
+#### v0.0.1 Changelog - 2025-12-30
 
 **Added**
 - Next.js 16 with App Router, TypeScript, and Tailwind CSS v4
@@ -46,7 +46,7 @@ Beta v0.1 ──► Beta v0.2 ──► Beta v0.3 ──► Beta v0.4 ──► 
 
 ---
 
-### Beta v0.2.0 - Core UI
+### Alpha v0.0.2 - Core UI
 **Status**: ✅ Complete
 **Completed**: 2025-12-30
 
@@ -64,7 +64,7 @@ Beta v0.1 ──► Beta v0.2 ──► Beta v0.3 ──► Beta v0.4 ──► 
 
 **Milestone**: All screens functional with mock data.
 
-#### v0.2.0 Changelog - 2025-12-30
+#### v0.0.2 Changelog - 2025-12-30
 
 **Added**
 - Base UI components: Button (primary/secondary/outline), Card (with stacked paper effect), Input/Textarea, Toggle
@@ -78,7 +78,7 @@ Beta v0.1 ──► Beta v0.2 ──► Beta v0.3 ──► Beta v0.4 ──► 
 
 ---
 
-### Beta v0.3.0 - Backend & Auth
+### Alpha v0.0.3 - Backend & Auth
 **Status**: ✅ Complete
 **Completed**: 2025-12-30
 
@@ -98,7 +98,7 @@ Beta v0.1 ──► Beta v0.2 ──► Beta v0.3 ──► Beta v0.4 ──► 
 
 **Milestone**: Full auth flow, all features work with database.
 
-#### v0.3.0 Changelog - 2025-12-30
+#### v0.0.3 Changelog - 2025-12-30
 
 **Added**
 - NextAuth.js v5 with Prisma adapter for authentication
@@ -132,7 +132,7 @@ Beta v0.1 ──► Beta v0.2 ──► Beta v0.3 ──► Beta v0.4 ──► 
 
 ---
 
-### Beta v0.4.0 - Payments & Access Control
+### Alpha v0.0.4 - Payments & Access Control
 **Status**: ✅ Complete
 **Completed**: 2025-12-30
 
@@ -150,7 +150,7 @@ Beta v0.1 ──► Beta v0.2 ──► Beta v0.3 ──► Beta v0.4 ──► 
 
 **Milestone**: Complete payment flow, trial and subscription working.
 
-#### v0.4.0 Changelog - 2025-12-30
+#### v0.0.4 Changelog - 2025-12-30
 
 **Added**
 - Stripe SDK integration with checkout sessions and webhooks
@@ -190,7 +190,7 @@ Beta v0.1 ──► Beta v0.2 ──► Beta v0.3 ──► Beta v0.4 ──► 
   - Success/canceled checkout feedback
 - Days API route uses new subscription utilities
 - Updated .env.example with Stripe configuration comments
-- Package version updated to 0.4.0
+- Package version updated to 0.0.4
 
 **Technical Notes**
 - Stripe webhook requires raw body for signature verification
@@ -203,7 +203,7 @@ Beta v0.1 ──► Beta v0.2 ──► Beta v0.3 ──► Beta v0.4 ──► 
 
 ---
 
-### Beta v0.5.0 - Testing & Polish
+### Alpha v0.0.5 - Testing & Polish
 **Status**: ⬜ Not Started
 **Target**: Weeks 7-8
 
@@ -224,7 +224,7 @@ Beta v0.1 ──► Beta v0.2 ──► Beta v0.3 ──► Beta v0.4 ──► 
 
 ---
 
-### Alpha v1.0.0 - Launch
+### Beta v0.1.0 - First Beta Release
 **Status**: ⬜ Not Started
 **Target**: Week 9+
 
@@ -246,33 +246,33 @@ Beta v0.1 ──► Beta v0.2 ──► Beta v0.3 ──► Beta v0.4 ──► 
 
 | Version | Date | Summary |
 |---------|------|---------|
-| v0.1.0 | 2025-12-30 | Project setup with Next.js 16, Tailwind, Prisma schema |
-| v0.2.0 | 2025-12-30 | UI components and screens with mock data |
-| v0.3.0 | 2025-12-30 | Authentication and API routes |
-| v0.4.0 | 2025-12-30 | Payments and subscriptions with Stripe |
-| v0.5.0 | TBD | Testing and polish |
-| v1.0.0 | TBD | Alpha launch |
+| v0.0.1 | 2025-12-30 | Project setup with Next.js 16, Tailwind, Prisma schema |
+| v0.0.2 | 2025-12-30 | UI components and screens with mock data |
+| v0.0.3 | 2025-12-30 | Authentication and API routes |
+| v0.0.4 | 2025-12-30 | Payments and subscriptions with Stripe |
+| v0.0.5 | TBD | Testing and polish |
+| v0.1.0 | TBD | First beta release |
 
 ---
 
-## Post-Launch Roadmap
+## Post-Beta Roadmap
 
-### v1.1.0 - Enhanced Engagement
+### v0.1.1 - Enhanced Engagement
 - Streak notifications
 - Achievement badges
 - Weekly email summaries
 
-### v1.2.0 - Content Expansion
+### v0.1.2 - Content Expansion
 - Additional translations (ESV, NIV)
 - Audio devotionals
 - Seasonal reading plans
 
-### v1.3.0 - AI Features
+### v0.2.0 - AI Features
 - Personalized reflection prompts
 - Smart search across entries
 - Context-aware reminders
 
-### v1.4.0 - Community
+### v0.3.0 - Community
 - Small group sharing
 - Discussion threads
 - Prayer requests
@@ -296,7 +296,7 @@ Beta v0.1 ──► Beta v0.2 ──► Beta v0.3 ──► Beta v0.4 ──► 
 When completing tasks, update this file with:
 
 ```markdown
-### v0.X.Y - [Date]
+### v0.0.X - [Date]
 
 #### Added
 - New feature description
@@ -313,4 +313,4 @@ When completing tasks, update this file with:
 
 ---
 
-*Updated: 2025-12-30 (v0.4.0)*
+*Updated: 2025-12-30 (v0.0.4)*

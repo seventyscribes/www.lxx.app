@@ -1,6 +1,6 @@
 {
   "name": "lxx-bible-study",
-  "version": "0.4.0",
+  "version": "0.0.4",
   "private": true,
   "scripts": {
     "dev": "next dev",

@@ -46,25 +46,39 @@ Beta v0.1 ──► Beta v0.2 ──► Beta v0.3 ──► Beta v0.4 ──► 
 
 ---
 
-## Upcoming Versions
-
 ### Beta v0.2.0 - Core UI
-**Status**: ⬜ Not Started
-**Target**: Weeks 2-3
+**Status**: ✅ Complete
+**Completed**: 2025-12-30
 
 | Task | Status | Agent |
 |------|--------|-------|
-| Implement design system components | ⬜ Pending | Frontend |
-| Build BottomNav navigation | ⬜ Pending | Frontend |
-| Create TodayScreen layout | ⬜ Pending | Frontend |
-| Build ScriptureReader component | ⬜ Pending | Frontend |
-| Implement ReflectionPrompt inputs | ⬜ Pending | Frontend |
-| Create JournalEditor with auto-save | ⬜ Pending | Frontend |
-| Build ProgressScreen timeline | ⬜ Pending | Frontend |
-| Build AccountScreen settings | ⬜ Pending | Frontend |
+| Implement design system components | ✅ Complete | Frontend |
+| Build BottomNav navigation | ✅ Complete | Frontend |
+| Create TodayScreen layout | ✅ Complete | Frontend |
+| Build ScriptureReader component | ✅ Complete | Frontend |
+| Implement ReflectionPrompt inputs | ✅ Complete | Frontend |
+| Create JournalEditor with auto-save | ✅ Complete | Frontend |
+| Build ProgressScreen timeline | ✅ Complete | Frontend |
+| Build AccountScreen settings | ✅ Complete | Frontend |
 | Import first 30 days of content | ⬜ Pending | Content |
 
 **Milestone**: All screens functional with mock data.
+
+#### v0.2.0 Changelog - 2025-12-30
+
+**Added**
+- Base UI components: Button (primary/secondary/outline), Card (with stacked paper effect), Input/Textarea, Toggle
+- Layout components: Header (with day navigation), BottomNav (fixed bottom tabs), Container
+- TodayScreen with scripture reading card, reading mode button, modern summary section, reflection prompts with auto-save, notes section, and "Conclude Day" button
+- ProgressScreen with hero card (days completed/percentage), visual timeline with milestones, day grid showing status, streak indicator
+- AccountScreen with subscription status, font size/family preferences, modern summaries toggle, journey management buttons
+- Immersive reading mode overlay with verse-by-verse display respecting font preferences
+- Progress context provider for client-side state management
+- Shared types and mock data constants for 3 days of content
+
+---
+
+## Upcoming Versions
 
 ---
 
@@ -151,7 +165,7 @@ Beta v0.1 ──► Beta v0.2 ──► Beta v0.3 ──► Beta v0.4 ──► 
 | Version | Date | Summary |
 |---------|------|---------|
 | v0.1.0 | 2025-12-30 | Project setup with Next.js 16, Tailwind, Prisma schema |
-| v0.2.0 | TBD | UI components and screens |
+| v0.2.0 | 2025-12-30 | UI components and screens with mock data |
 | v0.3.0 | TBD | Authentication and API |
 | v0.4.0 | TBD | Payments and subscriptions |
 | v0.5.0 | TBD | Testing and polish |

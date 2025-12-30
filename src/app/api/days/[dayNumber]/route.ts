@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth, checkUserAccess } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { canAccessContent, getSubscriptionStatus } from "@/lib/subscription";
+import { TRIAL_CONTENT_LIMIT } from "@/lib/stripe";
 
 // GET /api/days/[dayNumber] - Fetch Bible day content
 export async function GET(
@@ -24,12 +26,20 @@ export async function GET(
       );
     }
 
-    // Check access for days beyond trial (day 7)
-    if (dayNumber > 7) {
-      const access = await checkUserAccess(session.user.id);
-      if (!access.hasAccess) {
+    // Check content access using subscription status
+    if (dayNumber > TRIAL_CONTENT_LIMIT) {
+      const access = await canAccessContent(session.user.id, dayNumber);
+      if (!access.canAccess) {
+        // Get subscription status for paywall display
+        const subscriptionStatus = await getSubscriptionStatus(session.user.id);
         return NextResponse.json(
-          { error: "Subscription required", reason: access.reason },
+          {
+            error: "Subscription required",
+            reason: access.reason,
+            subscriptionStatus: subscriptionStatus.status,
+            trialDaysRemaining: subscriptionStatus.trialDaysRemaining,
+            isTrialExpired: subscriptionStatus.status === "trial_expired",
+          },
           { status: 403 }
         );
       }

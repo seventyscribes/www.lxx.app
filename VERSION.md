@@ -132,26 +132,74 @@ Beta v0.1 ──► Beta v0.2 ──► Beta v0.3 ──► Beta v0.4 ──► 
 
 ---
 
-## Upcoming Versions
-
----
-
 ### Beta v0.4.0 - Payments & Access Control
-**Status**: ⬜ Not Started
-**Target**: Weeks 5-6
+**Status**: ✅ Complete
+**Completed**: 2025-12-30
 
 | Task | Status | Agent |
 |------|--------|-------|
-| Configure Stripe products | ⬜ Pending | Payments |
-| Create Checkout session API | ⬜ Pending | Payments |
-| Implement webhook handlers | ⬜ Pending | Payments |
-| Build subscription status check | ⬜ Pending | Payments |
-| Create paywall UI component | ⬜ Pending | Frontend |
-| Implement trial period logic | ⬜ Pending | Backend |
-| Add content access control | ⬜ Pending | Backend |
-| Customer portal integration | ⬜ Pending | Payments |
+| Configure Stripe products | ✅ Complete | Payments |
+| Create Checkout session API | ✅ Complete | Payments |
+| Implement webhook handlers | ✅ Complete | Payments |
+| Build subscription status check | ✅ Complete | Payments |
+| Create paywall UI component | ✅ Complete | Frontend |
+| Implement trial period logic | ✅ Complete | Backend |
+| Add content access control | ✅ Complete | Backend |
+| Customer portal integration | ✅ Complete | Payments |
+| Update Account page with subscription status | ✅ Complete | Frontend |
 
 **Milestone**: Complete payment flow, trial and subscription working.
+
+#### v0.4.0 Changelog - 2025-12-30
+
+**Added**
+- Stripe SDK integration with checkout sessions and webhooks
+- Stripe library utilities (`src/lib/stripe.ts`) with pricing configuration
+  - Monthly plan: $4.99/month
+  - Annual plan: $39.99/year (33% savings)
+- Subscription status utilities (`src/lib/subscription.ts`)
+  - `getSubscriptionStatus()` - Comprehensive subscription info
+  - `canAccessContent()` - Day-level access control
+  - `getSubscriptionDetails()` - Account page display data
+- API routes:
+  - `POST /api/stripe/checkout` - Create Stripe checkout session
+  - `POST /api/stripe/webhook` - Handle Stripe webhook events
+  - `POST /api/stripe/portal` - Create customer portal session
+  - `GET /api/subscription` - Get current subscription status
+- Webhook handlers for Stripe events:
+  - `checkout.session.completed` - Activate subscription
+  - `customer.subscription.updated` - Sync status changes
+  - `customer.subscription.deleted` - Handle cancellations
+  - `invoice.payment_failed` - Mark as past_due
+  - `invoice.payment_succeeded` - Reactivate after payment
+- Paywall UI component (`src/components/ui/Paywall.tsx`)
+  - Modal overlay with pricing options
+  - Plan selection (monthly/annual)
+  - Feature highlights
+  - Checkout button integration
+- Content access control in days API route
+  - First 7 days accessible during trial
+  - Days 8+ require active subscription
+  - Returns subscription status on 403 for paywall display
+
+**Changed**
+- Account page now shows dynamic subscription status
+  - Trial days remaining indicator
+  - Upgrade button for non-subscribers
+  - Manage Subscription links to Stripe portal
+  - Success/canceled checkout feedback
+- Days API route uses new subscription utilities
+- Updated .env.example with Stripe configuration comments
+- Package version updated to 0.4.0
+
+**Technical Notes**
+- Stripe webhook requires raw body for signature verification
+- Customer portal requires configuration in Stripe Dashboard
+- Environment variables needed: STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, STRIPE_MONTHLY_PRICE_ID, STRIPE_ANNUAL_PRICE_ID, NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+
+---
+
+## Upcoming Versions
 
 ---
 
@@ -201,7 +249,7 @@ Beta v0.1 ──► Beta v0.2 ──► Beta v0.3 ──► Beta v0.4 ──► 
 | v0.1.0 | 2025-12-30 | Project setup with Next.js 16, Tailwind, Prisma schema |
 | v0.2.0 | 2025-12-30 | UI components and screens with mock data |
 | v0.3.0 | 2025-12-30 | Authentication and API routes |
-| v0.4.0 | TBD | Payments and subscriptions |
+| v0.4.0 | 2025-12-30 | Payments and subscriptions with Stripe |
 | v0.5.0 | TBD | Testing and polish |
 | v1.0.0 | TBD | Alpha launch |
 
@@ -265,4 +313,4 @@ When completing tasks, update this file with:
 
 ---
 
-*Updated: 2025-12-30 (v0.3.0)*
+*Updated: 2025-12-30 (v0.4.0)*

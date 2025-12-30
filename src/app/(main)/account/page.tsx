@@ -1,10 +1,25 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { signOut } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { useProgress } from "@/lib/context";
-import { Toggle } from "@/components/ui";
+import { Toggle, Paywall } from "@/components/ui";
 import { cn } from "@/lib/utils";
+
+interface SubscriptionInfo {
+  status: string;
+  hasAccess: boolean;
+  isTrialing: boolean;
+  trialDaysRemaining: number | null;
+  planType: string | null;
+  currentPeriodEnd: string | null;
+  subscription: {
+    stripeCustomerId: string;
+    status: string;
+    planType: string;
+  } | null;
+}
 
 function UserIcon() {
   return (
@@ -63,17 +78,131 @@ function LogOutIcon() {
   );
 }
 
+function CrownIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M12 6l4 6 5-4-2 10H5L3 8l5 4 4-6z" />
+    </svg>
+  );
+}
+
 const FONT_SIZES = ["sm", "base", "lg", "xl"] as const;
 
 export default function AccountPage() {
   const { progress, updateSettings } = useProgress();
+  const searchParams = useSearchParams();
+  const [subscriptionInfo, setSubscriptionInfo] = useState<SubscriptionInfo | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [showPaywall, setShowPaywall] = useState(false);
+  const [portalLoading, setPortalLoading] = useState(false);
+
+  // Check for success/canceled query params
+  const checkoutSuccess = searchParams.get("success") === "true";
+  const checkoutCanceled = searchParams.get("canceled") === "true";
+
+  useEffect(() => {
+    async function fetchSubscriptionStatus() {
+      try {
+        const response = await fetch("/api/subscription");
+        if (response.ok) {
+          const data = await response.json();
+          setSubscriptionInfo(data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch subscription status:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchSubscriptionStatus();
+  }, [checkoutSuccess]);
+
+  const handleManageSubscription = async () => {
+    if (!subscriptionInfo?.subscription?.stripeCustomerId) {
+      // No subscription yet, show paywall
+      setShowPaywall(true);
+      return;
+    }
+
+    setPortalLoading(true);
+    try {
+      const response = await fetch("/api/stripe/portal", {
+        method: "POST",
+      });
+      const data = await response.json();
+      if (data.url) {
+        window.location.href = data.url;
+      }
+    } catch (error) {
+      console.error("Failed to open customer portal:", error);
+    } finally {
+      setPortalLoading(false);
+    }
+  };
+
+  const getStatusLabel = () => {
+    if (!subscriptionInfo) return { label: "Loading...", color: "text-gray-400" };
+
+    switch (subscriptionInfo.status) {
+      case "active":
+        return { label: "LXX Premium", color: "text-gold" };
+      case "trialing":
+        return {
+          label: `Free Trial (${subscriptionInfo.trialDaysRemaining} day${subscriptionInfo.trialDaysRemaining !== 1 ? "s" : ""} left)`,
+          color: "text-gold"
+        };
+      case "trial_expired":
+        return { label: "Trial Expired", color: "text-red-400" };
+      case "canceled":
+        return { label: "Canceled", color: "text-orange-400" };
+      case "past_due":
+        return { label: "Payment Past Due", color: "text-red-400" };
+      default:
+        return { label: "Free Account", color: "text-gray-400" };
+    }
+  };
+
+  const statusInfo = getStatusLabel();
+  const isSubscribed = subscriptionInfo?.status === "active";
+  const isTrialing = subscriptionInfo?.isTrialing;
+  const showUpgradeButton = !isSubscribed;
 
   return (
     <div className="bg-parchment min-h-screen p-6 pb-24 max-w-2xl mx-auto">
+      {/* Success/Canceled Messages */}
+      {checkoutSuccess && (
+        <div className="mb-6 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-[16px] text-sm">
+          Welcome to LXX Premium! Your subscription is now active.
+        </div>
+      )}
+      {checkoutCanceled && (
+        <div className="mb-6 bg-yellow-50 border border-yellow-200 text-yellow-700 px-4 py-3 rounded-[16px] text-sm">
+          Checkout was canceled. You can try again anytime.
+        </div>
+      )}
+
       <header className="mb-10 mt-6 text-center">
         <div className="w-20 h-20 bg-navy rounded-[28px] flex items-center justify-center text-gold mx-auto mb-5 shadow-paper-xl border border-gold/10 relative">
           <UserIcon />
-          <div className="absolute -bottom-1 -right-1 bg-gold w-6 h-6 rounded-full border-4 border-parchment shadow-sm" />
+          {isSubscribed && (
+            <div className="absolute -bottom-1 -right-1 bg-gold w-6 h-6 rounded-full border-4 border-parchment shadow-sm flex items-center justify-center">
+              <CrownIcon />
+            </div>
+          )}
+          {!isSubscribed && (
+            <div className="absolute -bottom-1 -right-1 bg-gold w-6 h-6 rounded-full border-4 border-parchment shadow-sm" />
+          )}
         </div>
         <h2 className="text-2xl font-serif font-bold text-navy">
           Reflective Heart
@@ -91,13 +220,42 @@ export default function AccountPage() {
             <h4 className="text-gold text-[10px] uppercase tracking-widest font-bold mb-2 opacity-80">
               Membership
             </h4>
-            <p className="text-2xl font-serif font-bold">LXX Premium</p>
-            <div className="h-px w-8 bg-gold/40 my-4" />
-            <p className="text-sm text-gray-300 leading-relaxed opacity-70">
-              365 days of sacred guidance.
-              <br />
-              Journey active since 2025.
+            <p className={cn("text-2xl font-serif font-bold", statusInfo.color)}>
+              {loading ? "Loading..." : statusInfo.label}
             </p>
+            <div className="h-px w-8 bg-gold/40 my-4" />
+            {isSubscribed ? (
+              <p className="text-sm text-gray-300 leading-relaxed opacity-70">
+                365 days of sacred guidance.
+                <br />
+                {subscriptionInfo?.planType === "annual" ? "Annual" : "Monthly"} plan
+                {subscriptionInfo?.currentPeriodEnd && (
+                  <> &bull; Renews {new Date(subscriptionInfo.currentPeriodEnd).toLocaleDateString()}</>
+                )}
+              </p>
+            ) : isTrialing ? (
+              <p className="text-sm text-gray-300 leading-relaxed opacity-70">
+                Explore the first 7 days free.
+                <br />
+                Upgrade to unlock all 365 days.
+              </p>
+            ) : (
+              <p className="text-sm text-gray-300 leading-relaxed opacity-70">
+                Subscribe to unlock the full
+                <br />
+                365-day Bible study journey.
+              </p>
+            )}
+
+            {/* Upgrade Button */}
+            {showUpgradeButton && !loading && (
+              <button
+                onClick={() => setShowPaywall(true)}
+                className="mt-5 bg-gold text-navy px-6 py-3 rounded-[16px] font-bold text-xs uppercase tracking-widest hover:bg-gold/90 transition-colors"
+              >
+                Upgrade to Premium
+              </button>
+            )}
           </div>
         </div>
 
@@ -186,12 +344,20 @@ export default function AccountPage() {
             Journey Management
           </h3>
           <div className="bg-white rounded-[28px] overflow-hidden border border-gray-100 shadow-paper">
-            <button className="w-full px-5 py-5 border-b border-gray-50 flex items-center justify-between active:bg-gray-50 transition-colors group">
+            <button
+              onClick={handleManageSubscription}
+              disabled={portalLoading}
+              className="w-full px-5 py-5 border-b border-gray-50 flex items-center justify-between active:bg-gray-50 transition-colors group disabled:opacity-50"
+            >
               <span className="text-sm font-semibold text-navy">
-                Manage Subscription
+                {subscriptionInfo?.subscription ? "Manage Subscription" : "Subscribe"}
               </span>
               <div className="text-gold transition-transform group-hover:translate-x-1">
-                <ChevronRight />
+                {portalLoading ? (
+                  <span className="text-xs text-gray-400">Loading...</span>
+                ) : (
+                  <ChevronRight />
+                )}
               </div>
             </button>
             <button className="w-full px-5 py-5 border-b border-gray-50 flex items-center justify-between active:bg-gray-50 transition-colors group">
@@ -224,10 +390,19 @@ export default function AccountPage() {
             LXX Bible Study &copy; MMXXV
           </p>
           <p className="text-[9px] text-gray-300 uppercase tracking-widest">
-            Build 0.3.0-beta &bull; Made with reverence
+            Build 0.4.0-beta &bull; Made with reverence
           </p>
         </footer>
       </div>
+
+      {/* Paywall Modal */}
+      {showPaywall && (
+        <Paywall
+          trialDaysRemaining={subscriptionInfo?.trialDaysRemaining ?? undefined}
+          isTrialExpired={subscriptionInfo?.status === "trial_expired"}
+          onClose={() => setShowPaywall(false)}
+        />
+      )}
     </div>
   );
 }

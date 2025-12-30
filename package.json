@@ -1,6 +1,6 @@
 {
   "name": "lxx-bible-study",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -22,6 +22,7 @@
     "prisma": "^7.2.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
+    "stripe": "^20.1.0",
     "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {

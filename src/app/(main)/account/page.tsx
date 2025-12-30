@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { signOut } from "next-auth/react";
 import { useProgress } from "@/lib/context";
 import { Toggle } from "@/components/ui";
 import { cn } from "@/lib/utils";
@@ -201,7 +202,10 @@ export default function AccountPage() {
                 <ChevronRight />
               </div>
             </button>
-            <button className="w-full px-5 py-5 flex items-center justify-between text-red-500 active:bg-red-50 transition-colors group">
+            <button
+              onClick={() => signOut({ callbackUrl: "/login" })}
+              className="w-full px-5 py-5 flex items-center justify-between text-red-500 active:bg-red-50 transition-colors group"
+            >
               <span className="text-sm font-bold uppercase tracking-widest text-[11px]">
                 Sign Out
               </span>
@@ -220,7 +224,7 @@ export default function AccountPage() {
             LXX Bible Study &copy; MMXXV
           </p>
           <p className="text-[9px] text-gray-300 uppercase tracking-widest">
-            Build 0.2.0-beta &bull; Made with reverence
+            Build 0.3.0-beta &bull; Made with reverence
           </p>
         </footer>
       </div>
